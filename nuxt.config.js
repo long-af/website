@@ -37,7 +37,8 @@ export default {
 			{ hid: 'og:site_name', property: 'og:site_name', content: `${process.env.SERVICE_NAME}` }
 		],
 		link: [
-			{ type: 'application/json+oembed', href: `${process.env.domain}/assets/oembed.json` }
+			{ type: 'application/json+oembed', href: `${process.env.domain}/assets/oembed.json` },
+			{ type: 'image/x-icon', rel: 'icon', href: `${process.env.domain}/assets/favicon.ico` }
 		]
 	},
 	css: [],
