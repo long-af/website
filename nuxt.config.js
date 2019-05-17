@@ -39,9 +39,6 @@ export default {
 			{ type: 'application/json+oembed', href: `${process.env.DOMAIN}/oembed.json` }
 		]
 	},
-	plugins: [
-		'~/plugins/axios'
-	],
 	css: [],
 	modules: [
 		'@nuxtjs/axios'
