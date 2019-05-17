@@ -1,9 +1,10 @@
 <style lang="scss" scoped>
+	#overview { padding-top: 0; }
 	.section-hero { height: 100vh; }
 	.divider {
 		border-top: 0.05rem solid #d8d9da;
 		margin-bottom: 3rem;
-		margin-top: 2rem;
+		margin-top: 0rem;
 
 		&.invisible { visibility: hidden; }
 	}
@@ -20,13 +21,18 @@
 		padding: 0;
 	}
 	div.result { display: grid; }
+	img.logo { width: 192px; }
+	.mt2 { margin-top: 2rem; }
 </style>
 <template>
 	<div class="section section-hero bg-gray">
 		<div id="overview"
 			class="grid-hero container grid-lg text-center">
+			<img src="~/assets/logo.png"
+				class="logo"
+				alt="logo">
 			<h1>Long.<u>af</u></h1>
-			<h2>World's <mark>fastest</mark> URL shortener. For real.</h2>
+			<h2>World's <mark>fastest</mark> URL shortener resolver. For real.</h2>
 
 			<div class="divider invisible" />
 
@@ -36,6 +42,7 @@
 					type="text"
 					class="form-input"
 					placeholder="Paste it here"
+					:disabled="loading"
 					@keyup.enter="shorten">
 				<button class="btn btn-primary input-group-btn"
 					:class="{ loading }"
@@ -91,7 +98,7 @@
 			</div>
 
 			<div v-if="createdUrls.length"
-				class="divider text-center"
+				class="divider text-center mt2"
 				data-content="Shortened URLs" />
 
 			<div class="result">
@@ -107,12 +114,13 @@
 					<div class="card">
 						<div class="card-image">
 							<img class="img-responsive"
-								src="https://y4j7y8s9.ssl.hwcdn.net/wp-content/uploads/2018/04/discordpromo-1024x576.jpg"
+								src="~/assets/discord.jpg"
 								alt="Discord">
 						</div>
 						<div class="card-footer">
 							<a class="btn btn-primary"
-								href="#cards">Support</a>
+								href="https://discord.gg/5g6vgwn"
+								target="_blank">Support</a>
 						</div>
 						<div class="card-body">
 							<strong>Join Discord!</strong>
@@ -125,7 +133,7 @@
 					<div class="card">
 						<div class="card-image">
 							<img class="img-responsive"
-								src="https://lolisafe.moe/Nlbb5Ocj.jpg"
+								src="~/assets/browsers.jpg"
 								alt="Browser extensions">
 						</div>
 						<div class="card-footer">
@@ -134,7 +142,8 @@
 							<a class="btn btn-primary"
 								href="#cards">Firefox</a>
 							<a class="btn btn-link"
-								href="#cards">Source</a>
+								href="https://github.com/long-af/browser-extension"
+								target="_blank">Source</a>
 						</div>
 						<div class="card-body">
 							<strong>Chrome extension</strong>.
@@ -147,12 +156,13 @@
 					<div class="card">
 						<div class="card-image">
 							<img class="img-responsive"
-								src="https://kinsta.com/wp-content/uploads/2018/04/what-is-github-1-1.png"
+								src="~/assets/github.jpg"
 								alt="GitHub">
 						</div>
 						<div class="card-footer">
 							<a class="btn btn-primary"
-								href="#cards">GitHub</a>
+								href="https://github.com/long-af"
+								target="_blank">GitHub</a>
 						</div>
 						<div class="card-body">
 							<strong>Source code</strong>.
