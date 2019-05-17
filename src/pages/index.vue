@@ -109,7 +109,7 @@
 		</div>
 		<div class="grid-hero container grid-lg text-center">
 			<div class="columns">
-				<div class="column col-4">
+				<div class="column col-4 col-xs-12">
 					<div class="card">
 						<div class="card-image">
 							<img class="img-responsive"
@@ -128,7 +128,7 @@
 					</div>
 				</div>
 
-				<div class="column col-4">
+				<div class="column col-4 col-xs-12">
 					<div class="card">
 						<div class="card-image">
 							<img class="img-responsive"
@@ -151,7 +151,7 @@
 					</div>
 				</div>
 
-				<div class="column col-4">
+				<div class="column col-4 col-xs-12">
 					<div class="card">
 						<div class="card-image">
 							<img class="img-responsive"
