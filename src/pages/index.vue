@@ -30,9 +30,8 @@
 			class="grid-hero container grid-lg text-center">
 			<img src="~/assets/logo.png"
 				class="logo"
-				alt="logo">
-			<h1>Long.<u>af</u></h1>
-			<h2>World's <mark>fastest</mark> URL shortener resolver. For real.</h2>
+				alt="long.af logo">
+			<h2>World's <mark>fastest</mark> URL shortener resolver. <br> No ads. No tracking. No bullshit.</h2>
 
 			<div class="divider invisible" />
 
