@@ -1,20 +1,16 @@
 export const state = () => ({
-	alert: null
+	error: null
 });
 
 /* eslint-disable no-shadow */
 export const mutations = {
-	alert(state, payload) {
-		state.alert = payload;
+	error(state, payload) {
+		state.error = payload;
 	}
 };
 
 export const actions = {
-	alert({ commit }, payload) {
-		if (!payload) return commit('alert', null);
-		commit('alert', {
-			text: payload.text,
-			error: payload.error
-		});
+	error({ commit }, payload) {
+		return commit('error', payload);
 	}
 };
