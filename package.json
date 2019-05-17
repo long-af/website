@@ -1,0 +1,41 @@
+{
+  "name": "fast.af-website",
+  "version": "1.0.0",
+  "description": "Website of the fastest URL shortener in the world! 🚀",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "site": "cross-env NODE_ENV=production nuxt start"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.4.1",
+    "axios": "^0.18.0",
+    "dotenv": "^8.0.0",
+    "nuxt": "^2.7.1",
+    "spectre.css": "^0.5.8"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.5.1",
+    "babel-eslint": "^10.0.1",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-aqua": "^5.0.0",
+    "eslint-plugin-vue": "^5.2.2",
+    "node-sass": "^4.12.0",
+    "postcss-css-variables": "^0.12.0",
+    "postcss-nested": "^4.1.2",
+    "sass-loader": "^7.1.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "aqua/vue",
+      "aqua/node"
+    ],
+    "rules": {
+      "vue/attribute-hyphenation": 0,
+      "quote-props": 0
+    }
+  }
+}
