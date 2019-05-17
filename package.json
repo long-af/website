@@ -4,6 +4,11 @@
   "description": "Website of the fastest URL shortener in the world! 🚀",
   "main": "index.js",
   "license": "MIT",
+  "author": {
+    "name": "Pitu",
+    "email": "heyitspitu@gmail.com",
+    "url": "https://github.com/Pitu"
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
