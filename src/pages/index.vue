@@ -1,6 +1,5 @@
 <style lang="scss" scoped>
 	.section-hero { height: 100vh; }
-	p.actionButtons { margin-top: 2rem; }
 	.divider {
 		border-top: 0.05rem solid #d8d9da;
 		margin-bottom: 3rem;
@@ -14,6 +13,13 @@
 	}
 
 	.form-switch { text-align: left; }
+
+	.grid-hero .card {
+		background: #fff;
+		border: 0.05rem solid #dadee4;
+		padding: 0;
+	}
+	div.result { display: grid; }
 </style>
 <template>
 	<div class="section section-hero bg-gray">
@@ -29,8 +35,12 @@
 				<input v-model="urlToShorten"
 					type="text"
 					class="form-input"
-					placeholder="Paste it here">
-				<button class="btn btn-primary input-group-btn">Get a short URL</button>
+					placeholder="Paste it here"
+					@keyup.enter="shorten">
+				<button class="btn btn-primary input-group-btn"
+					:class="{ loading }"
+					:disabled="loading"
+					@click="shorten">Get a short URL</button>
 			</div>
 
 			<div class="columns">
@@ -80,21 +90,77 @@
 				<button class="btn btn-primary input-group-btn disabled">Coming soon!</button>
 			</div>
 
+			<div v-if="createdUrls.length"
+				class="divider text-center"
+				data-content="Shortened URLs" />
+
 			<div class="result">
 				<a v-for="(url, index) in createdUrls"
 					:key="index"
+					:href="url"
 					target="_blank">{{ url }}</a>
 			</div>
+		</div>
+		<div class="grid-hero container grid-lg text-center">
+			<div class="columns">
+				<div class="column col-4">
+					<div class="card">
+						<div class="card-image">
+							<img class="img-responsive"
+								src="https://y4j7y8s9.ssl.hwcdn.net/wp-content/uploads/2018/04/discordpromo-1024x576.jpg"
+								alt="Discord">
+						</div>
+						<div class="card-footer">
+							<a class="btn btn-primary"
+								href="#cards">Support</a>
+						</div>
+						<div class="card-body">
+							<strong>Join Discord!</strong>
+							Questions? Suggestions? Come hang out on Discord and tell us all about it.
+						</div>
+					</div>
+				</div>
 
-			<p class="actionButtons">
-				<a href="#"
-					class="btn btn-primary btn-lg btnModal">Install</a>
-				<a href="https://discord.gg/5g6vgwn"
-					class="btn btn-primary btn-lg">Support</a>
-				<a href="https://github.com/pitu/Magane"
-					target="_blank"
-					class="btn btn-primary btn-lg">GitHub</a>
-			</p>
+				<div class="column col-4">
+					<div class="card">
+						<div class="card-image">
+							<img class="img-responsive"
+								src="https://lolisafe.moe/Nlbb5Ocj.jpg"
+								alt="Browser extensions">
+						</div>
+						<div class="card-footer">
+							<a class="btn btn-primary"
+								href="#cards">Chrome</a>
+							<a class="btn btn-primary"
+								href="#cards">Firefox</a>
+							<a class="btn btn-link"
+								href="#cards">Source</a>
+						</div>
+						<div class="card-body">
+							<strong>Chrome extension</strong>.
+							Shorten the url of the active tab by clicking on the extension icon.
+						</div>
+					</div>
+				</div>
+
+				<div class="column col-4">
+					<div class="card">
+						<div class="card-image">
+							<img class="img-responsive"
+								src="https://kinsta.com/wp-content/uploads/2018/04/what-is-github-1-1.png"
+								alt="GitHub">
+						</div>
+						<div class="card-footer">
+							<a class="btn btn-primary"
+								href="#cards">GitHub</a>
+						</div>
+						<div class="card-body">
+							<strong>Source code</strong>.
+							Browse the source code for both the website and browser extensions on GitHub.
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -105,17 +171,25 @@ export default {
 			urlToShorten: null,
 			expires: false,
 			expiresWhen: 'never',
-			createdUrls: []
+			createdUrls: [],
+			loading: false
 		};
 	},
 	methods: {
 		async shorten() {
-			const data = await this.$axios.$post('create', {
-				url: this.urlToShorten,
-				expires: this.expiresWhen
-			});
+			try {
+				this.loading = true;
+				const data = await this.$axios.$post('create', {
+					url: this.urlToShorten,
+					expires: this.expiresWhen
+				});
 
-			this.createdUrls.push(data.url);
+				this.createdUrls.push(data.url);
+			} catch (error) {
+				this.$store.dispatch('error', error.response ? error.response.data.message : 'Network error');
+			} finally {
+				this.loading = false;
+			}
 		}
 	}
 };
