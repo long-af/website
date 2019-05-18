@@ -20,9 +20,27 @@
 		border: 0.05rem solid #dadee4;
 		padding: 0;
 	}
-	div.result { display: grid; }
+	div.result {
+		display: inline-block;
+		a { display: block; }
+	}
 	img.logo { width: 192px; }
 	.mt2 { margin-top: 2rem; }
+	.pt0 { padding-top: 0px; }
+	.pb0 { padding-bottom: 0px; }
+
+	.form-switch.is-right {
+		text-align: right;
+		padding-right: 2rem;
+		padding-left: 0.4rem;
+
+		i.form-icon {
+			right: 0 !important;
+			left: unset;
+		}
+	}
+
+	.columns.button-toggles { margin-bottom: 1rem; }
 </style>
 <template>
 	<div class="section section-hero bg-gray">
@@ -59,6 +77,18 @@
 						</label>
 					</div>
 				</div>
+				<div class="column col-6">
+					<div class="form-group">
+						<label class="form-switch is-right">
+							<input v-model="type"
+								type="checkbox">
+							<i class="form-icon" /> URL Theme
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="columns button-toggles">
 				<div v-if="expires"
 					class="column col-6">
 					<div class="columns">
@@ -79,6 +109,23 @@
 								<button class="btn btn-sm"
 									:class="{ active: expiresWhen === 'year' }"
 									@click="expiresWhen = 'year'">1 year</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div v-if="type"
+					class="column col-6"
+					:class="{ 'col-ml-auto': !expires }">
+					<div class="columns">
+						<div class="column">
+							<div class="btn-group btn-group-block">
+								<button class="btn btn-sm"
+									:class="{ active: !whichType }"
+									@click="whichType = null">Short</button>
+								<button class="btn btn-sm"
+									:class="{ active: whichType === 'words' }"
+									@click="whichType = 'words'">Words</button>
 							</div>
 						</div>
 					</div>
@@ -137,9 +184,11 @@
 						</div>
 						<div class="card-footer">
 							<a class="btn btn-primary"
-								href="#cards">Chrome</a>
+								href="https://chrome.google.com/webstore/detail/longaf-url-shortener/alkflcbgblocpmpcdbjmgakpjimaalcj"
+								target="_blank">Chrome</a>
 							<a class="btn btn-primary"
-								href="#cards">Firefox</a>
+								href="https://addons.mozilla.org/en-US/firefox/addon/long-af-url-shortener/"
+								target="_blank">Firefox</a>
 							<a class="btn btn-link"
 								href="https://github.com/long-af/browser-extension"
 								target="_blank">Source</a>
@@ -181,7 +230,9 @@ export default {
 			expires: false,
 			expiresWhen: 'never',
 			createdUrls: [],
-			loading: false
+			loading: false,
+			type: false,
+			whichType: null
 		};
 	},
 	methods: {
@@ -190,7 +241,8 @@ export default {
 				this.loading = true;
 				const data = await this.$axios.$post('create', {
 					url: this.urlToShorten,
-					expires: this.expiresWhen
+					expires: this.expiresWhen,
+					type: this.whichType
 				});
 
 				this.createdUrls.push(data.url);
