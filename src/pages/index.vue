@@ -1,5 +1,6 @@
 <style lang="scss" scoped>
-	#overview { padding-top: 0; }
+	.links-container { padding-top: 3rem; }
+	.app-container { padding-top: 0; }
 	.section-hero { height: 100vh; }
 	.divider {
 		border-top: 0.05rem solid #d8d9da;
@@ -41,11 +42,19 @@
 	}
 
 	.columns.button-toggles { margin-bottom: 1rem; }
+	.relative { position: relative; }
+	.characters-left {
+		position: absolute;
+		right: 130px;
+		z-index: 9;
+		bottom: -15px;
+		font-size: .5rem;
+		pointer-events: none;
+	}
 </style>
 <template>
 	<div class="section section-hero bg-gray">
-		<div id="overview"
-			class="grid-hero container grid-lg text-center">
+		<div class="grid-hero container grid-lg text-center app-container">
 			<img src="~/assets/logo.png"
 				class="logo"
 				alt="long.af logo">
@@ -53,14 +62,23 @@
 
 			<div class="divider invisible" />
 
-			<div class="input-group">
-				<span class="input-group-addon">URL to shorten</span>
+			<div class="input-group relative">
+				<span class="input-group-addon hide-xs">URL to shorten</span>
 				<input v-model="urlToShorten"
 					type="text"
 					class="form-input"
 					placeholder="Paste it here"
 					:disabled="loading"
 					@keyup.enter="shorten">
+				<span class="characters-left">
+					<template v-if="urlToShorten && urlToShorten.length > 1000">
+						<mark>{{ urlToShorten ? urlToShorten.length : 0 }}</mark>
+					</template>
+					<template v-else>
+						{{ urlToShorten ? urlToShorten.length : 0 }}
+					</template>
+					/ 1000
+				</span>
 				<button class="btn btn-primary input-group-btn"
 					:class="{ loading }"
 					:disabled="loading"
@@ -95,8 +113,8 @@
 						<div class="column">
 							<div class="btn-group btn-group-block">
 								<button class="btn btn-sm"
-									:class="{ active: expiresWhen === 'never' }"
-									@click="expiresWhen = 'never'">Never</button>
+									:class="{ active: !expiresWhen }"
+									@click="expiresWhen = null">Never</button>
 								<button class="btn btn-sm"
 									:class="{ active: expiresWhen === 'day' }"
 									@click="expiresWhen = 'day'">1 day</button>
@@ -154,7 +172,7 @@
 					target="_blank">{{ url }}</a>
 			</div>
 		</div>
-		<div class="grid-hero container grid-lg text-center">
+		<div class="grid-hero container grid-lg text-center links-container">
 			<div class="columns">
 				<div class="column col-4 col-xs-12">
 					<div class="card">
@@ -237,6 +255,9 @@ export default {
 	},
 	methods: {
 		async shorten() {
+			if (!this.urlToShorten) return this.$store.dispatch('error', 'Can\'t shorten what doesn\'t exist.');
+			if (this.urlToShorten.length < 4) return this.$store.dispatch('error', 'Come on bruh, at least 4 characters.');
+			if (this.urlToShorten.length > 1000) return this.$store.dispatch('error', 'Sorry, that URL is too long. Even for us.');
 			try {
 				this.loading = true;
 				const data = await this.$axios.$post('create', {
