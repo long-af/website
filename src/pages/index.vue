@@ -63,15 +63,21 @@
 				alt="long.af logo">
 			<h2>World's <mark>fastest</mark> URL shortener resolver. <br> No ads. No tracking. No bullshit.</h2>
 
-			<div v-if="createdUrls.length"
+			<div v-if="createdUrl"
 				class="result">
-				<div v-for="(url, index) in createdUrls"
-					:key="index">
-					<a :href="url"
-						target="_blank">{{ url }}</a>
+				<div>
+					<button class="btn btn-link tooltip"
+						data-tooltip="Regenerate the url!"
+						:class="{ loading: regenerating }"
+						:disabled="regenerating"
+						@click="regenerate(createdUrl)">
+						<i class="icon icon-refresh" />
+					</button>
+					<a :href="createdUrl.url"
+						target="_blank">{{ createdUrl.url }}</a>
 					<button class="btn btn-link tooltip"
 						data-tooltip="Copy link"
-						@click="copy(url)">
+						@click="copy(createdUrl.url)">
 						<i class="icon icon-copy" />
 					</button>
 				</div>
@@ -160,6 +166,9 @@
 								<button class="btn btn-sm"
 									:class="{ active: whichType === 'words' }"
 									@click="whichType = 'words'">Words</button>
+								<button class="btn btn-sm"
+									:class="{ active: whichType === 'pokemon' }"
+									@click="whichType = 'pokemon'">Pokémon</button>
 							</div>
 						</div>
 					</div>
@@ -252,10 +261,11 @@ export default {
 			urlToShorten: null,
 			expires: false,
 			expiresWhen: 'never',
-			createdUrls: [],
+			createdUrl: null,
 			loading: false,
 			type: false,
-			whichType: null
+			whichType: null,
+			regenerating: false
 		};
 	},
 	methods: {
@@ -271,11 +281,52 @@ export default {
 					type: this.whichType
 				});
 
-				this.createdUrls.push(data.url);
+				this.createdUrl = {
+					url: data.url,
+					token: data.token,
+					originalUrl: this.urlToShorten,
+					expires: this.expiresWhen,
+					type: this.whichType
+				};
+
+				/*
+				this.createdUrls.push({
+					url: data.url,
+					token: data.token,
+					meta: {
+						url: this.urlToShorten,
+						expires: this.expiresWhen,
+						type: this.whichType
+					}
+				});
+				*/
 			} catch (error) {
 				this.$store.dispatch('error', error.response ? error.response.data.message : 'Network error');
 			} finally {
 				this.loading = false;
+			}
+		},
+		async regenerate(url) {
+			try {
+				this.regenerating = true;
+				const data = await this.$axios.$post('create', {
+					url: url.originalUrl,
+					expires: url.expires,
+					type: url.type,
+					token: url.token
+				});
+
+				this.createdUrl = {
+					url: data.url,
+					token: data.token,
+					originalUrl: url.originalUrl,
+					expires: url.expires,
+					type: url.type
+				};
+			} catch (error) {
+				this.$store.dispatch('error', error.response ? error.response.data.message : 'Network error');
+			} finally {
+				this.regenerating = false;
 			}
 		},
 		copy(url) {
