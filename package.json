@@ -18,7 +18,8 @@
     "@nuxtjs/axios": "^5.4.1",
     "dotenv": "^8.0.0",
     "nuxt": "^2.7.1",
-    "spectre.css": "^0.5.8"
+    "spectre.css": "^0.5.8",
+    "v-clipboard": "^2.2.2"
   },
   "devDependencies": {
     "autoprefixer": "^9.5.1",

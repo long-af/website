@@ -45,6 +45,9 @@ export default {
 	modules: [
 		'@nuxtjs/axios'
 	],
+	plugins: [
+		'~/plugins/v-clipboard'
+	],
 	axios: {
 		baseURL: `https://api.long.af`
 	},
