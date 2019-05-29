@@ -47,6 +47,7 @@ export default {
 	$error-color: #e24a4a;
 
 	@import "node_modules/spectre.css/src/spectre";
+	@import "node_modules/spectre.css/dist/spectre-icons.css";
 	@import "~/assets/style.css";
 
 	div.notification-container {
