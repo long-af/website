@@ -21,10 +21,13 @@
 		border: 0.05rem solid #dadee4;
 		padding: 0;
 	}
+
 	div.result {
-		display: inline-block;
-		a { display: block; }
+		padding: 1rem;
+		background: #ffe9b3;
+		border: .05rem solid #ffd367;
 	}
+
 	img.logo { width: 192px; }
 	.mt2 { margin-top: 2rem; }
 	.pt0 { padding-top: 0px; }
@@ -60,6 +63,19 @@
 				alt="long.af logo">
 			<h2>World's <mark>fastest</mark> URL shortener resolver. <br> No ads. No tracking. No bullshit.</h2>
 
+			<div v-if="createdUrls.length"
+				class="result">
+				<div v-for="(url, index) in createdUrls"
+					:key="index">
+					<a :href="url"
+						target="_blank">{{ url }}</a>
+					<button class="btn btn-link tooltip"
+						data-tooltip="Copy link"
+						@click="copy(url)">
+						<i class="icon icon-copy" />
+					</button>
+				</div>
+			</div>
 			<div class="divider invisible" />
 
 			<div class="input-group relative">
@@ -159,17 +175,6 @@
 					class="form-input"
 					placeholder="Vanity url">
 				<button class="btn btn-primary input-group-btn disabled">Coming soon!</button>
-			</div>
-
-			<div v-if="createdUrls.length"
-				class="divider text-center mt2"
-				data-content="Shortened URLs" />
-
-			<div class="result">
-				<a v-for="(url, index) in createdUrls"
-					:key="index"
-					:href="url"
-					target="_blank">{{ url }}</a>
 			</div>
 		</div>
 		<div class="grid-hero container grid-lg text-center links-container">
@@ -272,6 +277,9 @@ export default {
 			} finally {
 				this.loading = false;
 			}
+		},
+		copy(url) {
+			this.$clipboard(url);
 		}
 	}
 };
